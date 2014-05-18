@@ -33,6 +33,7 @@ ser=serial.Serial('/dev/ttyUSB0',9600)    # open serial communication with ardui
 print(ser.readline())
 
 sbuf=""
+
 while True:
        # read buffer from arduino
     sbuf=sbuf+ser.read(ser.inWaiting()) #read character at a time if serial is stuck

@@ -8,7 +8,7 @@ Na drugi strani komunicira z Arduinom Python:
 
 TempControl.py  - glavna komunikacija za Arduinom, za enkrat je narejena tako, da zna brati samo en temperaturni senzor
 Calibration.py  - funkcija kalibracije in zapisa parametrov kalibracije, za določitev temperature na senzorju.
-Regresion.py  - khmm bom združil z Calibration.py brezveze ločeno...
+
 
 
 
