@@ -1,0 +1,16 @@
+Projektič Kontrola temperature z Arduinom
+
+V direktoriju Pt100_PIDvMP se nahajajo datoteke povezane z elektroniko in arduinom.
+slika PCB-ja in datoteke za izdelavo PCB-ja.
+Koda za Arduino je v Pt100_PIDvMP.ini datoteki
+
+Na drugi strani komunicira z Arduinom Python:
+
+TempControl.py  - glavna komunikacija za Arduinom, za enkrat je narejena tako, da zna brati samo en temperaturni senzor
+Calibration.py  - funkcija kalibracije in zapisa parametrov kalibracije, za določitev temperature na senzorju.
+Regresion.py  - khmm bom združil z Calibration.py brezveze ločeno...
+
+
+
+
+
