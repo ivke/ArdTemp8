@@ -1,8 +1,10 @@
-__author__ = 'ivke'
 import serial
 from time import sleep
 from scipy import stats
 from datetime import datetime
+
+kx=(0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3)
+kint=(0,0,0,0,0,0,0,0,0)
 
 def readTemp(DigV):
     try:
@@ -23,7 +25,9 @@ def readTemp(DigV):
 
 
 
-def SetRegresionCoef(senzorNumber,X,Y):  # gets array of Xs and Ys and do a liear regresion. Store values in file CalibratedTemp.txt
+def SetRegresionCoef(senzorNumber,X,Y):  
+    """ gets array of Xs and Ys and do a linear regression. Store values in file CalibratedTemp.txt"""
+    
     sslope, intercept, r_value,p_value, std_err=linregress(X,Y)
     print(slope)
     from datetime import datetime
@@ -43,34 +47,40 @@ def SetRegresionCoef(senzorNumber,X,Y):  # gets array of Xs and Ys and do a liea
     return sslope,intercept
 
 def calcTemp(senzorNumber,bufval):
-    return bufval*kx[senzorNumber]+kint[senzorNumber]
+    return round(bufval*kx[senzorNumber]+kint[senzorNumber])
 
 def ReadCalibratedSet():
-    f=open('CalibratedTemp.txt','r')  # open file for regresion line parameters
+    """  """
+    f=open('CalibratedTemp.txt','r')  # open file for regression line parameters
     ftext=f.readlines()      # read all file into ftext
     for n in range(1,8):
-        kx[n]=float(ftext[11*n-8])   # read last 12th line
+        kx[n]=float(ftext[11*n-8])   # 
         kint[n]=float(ftext[11*n-6])  # read last 10th line
+    
     return kx, kint
 
 
-print("Wait communication with system....")
-n=0
-calValx=[]
-calValy=[]
+def main():
+    print("Wait communication with system....")
+    n=0
+    calValx=[]
+    calValy=[]
+    
+    
+    
+    
+    while (n<5) :
+        ser=serial.Serial('/dev/ttyUSB0',9600)
+        sbuf=ser.readline()
+        sTempBuf=sbuf[0:4]
+        print(sTempBuf)
+        cbuf=readTemp(sTempBuf)
+        print(cbuf, " ",n)
+        if cbuf!=0:
+            n=n+1
+            calValy.append(int(cbuf))
+            calValx.append(int(sTempBuf))
 
 
-
-
-while (n<5) :
-    ser=serial.Serial('/dev/ttyUSB0',9600)
-    sbuf=ser.readline()
-    sTempBuf=sbuf[0:4]
-    print(sTempBuf)
-    cbuf=readTemp(sTempBuf)
-    print(cbuf, " ",n)
-    if cbuf!=0:
-        n=n+1
-        calValy.append(int(cbuf))
-        calValx.append(int(sTempBuf))
-
+if __name__ == "__main__":
+   main()
