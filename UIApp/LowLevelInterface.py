@@ -2,6 +2,7 @@
 
 import time
 from threading import Thread
+import TempControl
 
 class SerialWorker:
 	isRunning = False
@@ -33,21 +34,13 @@ class SerialWorker:
 			# self.serialReadingCallback(rawSerial)
 
 			# sample - just to see something showing up in the screen
-			time.sleep(2)
-			self.tempReadingCallback(1, 1)
-			self.tempReadingCallback(2, 2)
-			self.tempReadingCallback(3, 3)
+			tempDict,rawSerial=TempControl.GetTempFromArduino()
+			for key,value in tempDict.items():
+				self.tempReadingCallback(key, value)
+			
 			self.serialReadingCallback("This is raw serial")
-			time.sleep(3)
-			self.tempReadingCallback(1, 4)
-			self.tempReadingCallback(2, 5)
-			self.tempReadingCallback(3, 6)
-			self.serialReadingCallback("ncsdnc lsdnc chnsdhjcn")
-			time.sleep(3)
-			self.tempReadingCallback(1, 7)
-			self.tempReadingCallback(2, 8)
-			self.tempReadingCallback(3, 9)
-			self.serialReadingCallback("cnsdal cnsdnh ksdan")
+			time.sleep(5)
+			
 	
 	def stop(self):
 		self.isRunning = False
