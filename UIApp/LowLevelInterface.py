@@ -17,6 +17,8 @@ class SerialWorker:
 
 	def handleSetTemperature(self, id, value):
 		print 'Sending to serial: ' + str(id) + ': ' + str(value)
+		if TempControl.SetTempForArduino(int(id), int(value)) is None:
+			pass
 	
 		# put code for sending temp to serial port
 		#TempControl.SetTempForArduino(id, value)
@@ -34,7 +36,7 @@ class SerialWorker:
 			# self.serialReadingCallback(rawSerial)
 
 			# sample - just to see something showing up in the screen
-			tempDict,rawSerial=TempControl.GetTempFromArduino()
+			tempDict,rawSerial=TempControl.GetTempFromArduino()   # go over tempDict
 			for key,value in tempDict.items():
 				self.tempReadingCallback(key, value)
 			

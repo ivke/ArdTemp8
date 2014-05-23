@@ -46,8 +46,11 @@ def SetRegresionCoef(senzorNumber,X,Y):
     f.close()
     return sslope,intercept
 
-def calcTemp(senzorNumber,bufval):
-    return round(bufval*kx[senzorNumber]+kint[senzorNumber])
+def calcTemp(senzorNumber,bufval):   # calculate temperature from ADC from calibration data
+    return round(bufval*kx[int(senzorNumber)-1]+kint[int(senzorNumber)-1])
+
+def calcADC(senzorNumber,temp):  # calculate set ADC from calibration data
+    return int(round((temp-kint[int(senzorNumber)-1])/kx[int(senzorNumber)-1],0))
 
 def ReadCalibratedSet():
     """  """
@@ -83,4 +86,5 @@ def main():
 
 
 if __name__ == "__main__":
-   main()
+   print calcADC(1,23)
+   #main()

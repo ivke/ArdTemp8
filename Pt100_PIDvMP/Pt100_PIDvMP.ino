@@ -237,14 +237,13 @@ void serialEvent() { // n akoncu loopa ga odpre... nima še kode za error ...
     char inChar = (char)Serial.read();
     // add it to the inputString:
     inputString += inChar;
-    // if the incoming character is a newline, set a flag
-    // so the main loop can do something about it:
-    if (inChar == '\n') {
+    // if the incoming character is a newline process a command
+    if (inChar == '\n') {   
       String neki=inputString.substring(0,2);
       String neki2=inputString.substring(2,7);
-      Serial.println(neki);
-      Serial.println(neki2);
-      Serial.println(inputString);
+      //Serial.println(neki);
+      //Serial.println(neki2);
+      //Serial.println(inputString);
       Commands(neki.toInt(),neki2.toInt());
       inputString="";
     }
