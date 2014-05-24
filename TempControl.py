@@ -1,5 +1,5 @@
 
-from Calibration import calcTemp, calcADC
+from Calibration import *
 import serial
 import time
 import string
@@ -56,7 +56,7 @@ def SetTempForArduino(sensorNumber,Temp):
     except serial.SerialException:
         print "Arduino is not responding!!!"
         return None
-    data="10%04d\n"%calcADC(sensorNumber,Temp) # formats the string output 10 command XXXX ADC value and \n
+    data="10%04i\n"%calcADC(sensorNumber,Temp) # formats the string output 10 command XXXX ADC value and \n
     print data
     try:
         ser.write(data)
@@ -66,6 +66,8 @@ def SetTempForArduino(sensorNumber,Temp):
     return data
 
 def main():
+    ReadCalibratedSet()
+    
     while True:
         print "start"
         t=GetTempFromArduino()

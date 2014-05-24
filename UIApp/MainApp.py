@@ -7,7 +7,7 @@
 
 import sys
 from PyQt4 import QtGui
-
+from Calibration import ReadCalibratedSet
 from UserInterface import MainWindow
 from UserInterface import UIUpdater
 from LowLevelInterface import SerialWorker
@@ -22,7 +22,8 @@ class MainApp:
 		self.uiUpdater = UIUpdater(self.mainWindow.handleTempSignal, self.mainWindow.handleRawSerialSignal)
 		self.serialWorker = SerialWorker(self.uiUpdater.raiseTemperatureEvent, self.uiUpdater.raiseRawSerialEvent)
 		self.mainWindow.setTemperatureHandler(self.serialWorker.handleSetTemperature)
-
+		ReadCalibratedSet()
+		
 	def addTemperatureSensor(self, id, unit):
 		self.mainWindow.addTempSensor(id, unit)
 
