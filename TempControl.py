@@ -4,8 +4,21 @@ import serial
 import time
 import string
 from datetime import datetime
+        
 
-
+def initSerial():
+    try:
+        ser=serial.Serial(port = '/dev/ttyUSB0',baudrate = 9600)    # open serial communication with arduino
+        ser.flushInput()
+        print ser.inWaiting()
+        sleep(10)
+        print ser.inWaiting()
+        ser.read(ser.inWaiting())
+        #ser.open()        
+    except serial.SerialException:
+        print "Arduino is not responding!!!"
+        return None
+    return ser
 def StoreTemp(temp1):  # store temperature in file for latter viewing
     No=datetime.now().strftime("%Y-%m-%d")
     filename="Temp"+No
@@ -20,11 +33,13 @@ def StoreTemp(temp1):  # store temperature in file for latter viewing
     templog.close()
 
 
-def GetTempFromArduino():
+def GetTempFromArduino(ser):
     """ Reads value from ADC from arduino and returns calculated temperature 
         as dictionary """
     try:
-        ser=serial.Serial(port = '/dev/ttyUSB0',baudrate = 9600,parity = serial.PARITY_NONE,stopbits = serial.STOPBITS_ONE,bytesize = serial.EIGHTBITS, timeout=10)    # open serial communication with arduino
+        #ser=serial.Serial(port = '/dev/ttyUSB0',baudrate = 9600)    # open serial communication with arduino
+        print ser.inWaiting()
+                
     except serial.SerialException:
         print "Arduino is not responding!!!"
         return None
@@ -66,11 +81,12 @@ def SetTempForArduino(sensorNumber,Temp):
     return data
 
 def main():
+    ser=initSerial()
     ReadCalibratedSet()
     
     while True:
         print "start"
-        t=GetTempFromArduino()
+        t=GetTempFromArduino(ser)
         print t
         time.sleep(10)
     # sleep for 2 seconds

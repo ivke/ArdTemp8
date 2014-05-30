@@ -37,8 +37,6 @@ def SetRegresionCoef(senzorNumber,X,Y):
     f=open('CalibratedTemp.txt','w')   #erase file and open file for input
     print tekst
     if not tekst:
-        print "pisem v fajl2!"
-        f.write("jebiga\n")
         f.write("%i; Date: %s; Slope: %1.5f; Intercept: %1.5f; R_value: %1.5f; p-value: %1.5f; STD_error:%1.5f;\n" % (senzorNumber, str(datetime.now()),sslope,intercept,r_value,p_value,std_err))    # write date and time
         return sslope,intercept
     for i in tekst:
@@ -69,7 +67,7 @@ def ReadCalibratedSet():
         global kx, kint
         kx[sID]=float(m1.group(0))   # 
         kint[sID]=float(m2.group(0))  # read last 10th line
-    
+    return kx, kint
    
 
 def main():

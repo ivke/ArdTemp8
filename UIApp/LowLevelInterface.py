@@ -2,7 +2,7 @@
 
 import time
 from threading import Thread
-import TempControl
+from ArduinoControl import *
 
 class SerialWorker:
 	isRunning = False
@@ -10,14 +10,14 @@ class SerialWorker:
 	def __init__(self, tempReadingCallback, serialReadingCallback):
 		self.tempReadingCallback = tempReadingCallback
 		self.serialReadingCallback = serialReadingCallback
-
+		self.ArdTemp=TempControler()
 	def start(self):
 		t = Thread(target=self._serialWorkerThread)
 		t.start()
 
 	def handleSetTemperature(self, id, value):
 		print 'Sending to serial: ' + str(id) + ': ' + str(value)
-		if TempControl.SetTempForArduino(int(id), int(value)) is None:
+		if self.ArdTemp.SetTemp(int(id), int(value)) is None:
 			pass
 	
 		# put code for sending temp to serial port
@@ -36,8 +36,8 @@ class SerialWorker:
 			# self.serialReadingCallback(rawSerial)
 
 			# sample - just to see something showing up in the screen
-			tempDict,rawSerial=TempControl.GetTempFromArduino()   # go over tempDict
-			for key,value in tempDict.items():
+			self.ArdTemp.GetTempDict()   
+			for key,value in self.ArdTemp.TempDict.items():
 				self.tempReadingCallback(key, value)
 			
 			self.serialReadingCallback("This is raw serial")
