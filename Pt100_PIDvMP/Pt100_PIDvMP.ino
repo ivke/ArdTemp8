@@ -56,7 +56,7 @@ void loop()
   for (int n=0; n<8;n++) {  // pogleda vse temperature in jih zapiše
     // izberemo temperaturni senzor
     Multiplexer(n+1);
-    //delay(100); // vprašanje koliko hitro se sistem stabilizira???
+    delay(300); // pod 300 ms vrednosti še niso stabilne nad so bi bilo potrebno izračunati glede na filter na koncu
     if (n<3) {  // prvi trije senzorji skrbijo tudi za regulacijo
       Setpoint=ADCSp[n];
       ADCT[n]=int(analogRead(tempV1pin)); // preberemo vrednost na temp. senzorju
@@ -66,7 +66,7 @@ void loop()
    } else 
     {  // za ostale se vrednost samo zapiše...
       Multiplexer(n+1);
-      delay(100);
+      delay(300);
       ADCT[n]=int(analogRead(tempV1pin));
       //Serial.print(ADCT[n]);
       //Serial.print(" ");
