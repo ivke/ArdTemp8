@@ -43,6 +43,8 @@ class ArduinoControler(object):
                 sbuf+=buf  # adds to sum buffer
                 break      # goes out of the loop remaining is left for next round
             sbuf+=buf
+        self.lastSerialReading = sbuf
+
         # code for extractin valid entries, all other are discharged
         import re
         patern="(?=\d{%i}\r\n)\d{%i}" % (self.DataLength,self.DataLength) # patern for regexpr matching it finds XXXXX\r\n and removes newline characters 
@@ -56,7 +58,7 @@ class ArduinoControler(object):
         print self.ADCList
             
         # make dict sensor number: ADC value to get latest readings and to organize it
-        self.ADCDict={int(x[0]):int(x[1:]) for x in self.ADCList}
+        self.ADCDict={int(x[0]):int(x[1:]) for x in self.ADCList}		
     
     def SetCmDArduino(self,cmd,Data):
         """ Sending command and data to Arduino via Serial"""

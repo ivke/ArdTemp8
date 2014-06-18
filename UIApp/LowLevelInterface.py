@@ -19,28 +19,16 @@ class SerialWorker:
 		print 'Sending to serial: ' + str(id) + ': ' + str(value)
 		if self.ArdTemp.SetTemp(int(id), int(value)) is None:
 			pass
-	
-		# put code for sending temp to serial port
-		#TempControl.SetTempForArduino(id, value)
 
 	def _serialWorkerThread(self):
 		self.isRunning = True
-		while self.isRunning:
-
-			## put code for reading from serial port in here
-			# tempsDict, rawSerial = TempControl.GetTempFromArduino
-			## assuming that tempsDict has sensor ids as keys
-			# for sensorId in tempsDict:
-			#	temp = tempsDict[key]
-			#	self.tempReadingCallback(sensorId, temp)
-			# self.serialReadingCallback(rawSerial)
-
-			# sample - just to see something showing up in the screen
-			self.ArdTemp.GetTempDict()   
-			for key,value in self.ArdTemp.TempDict.items():
-				self.tempReadingCallback(key, value)
+		while self.isRunning:			
+			self.ArdTemp.GetTempDict()   			
 			
-			self.serialReadingCallback("This is raw serial")
+			for key,value in self.ArdTemp.TempDict.items():	# self.ArdTemp.TempDict => key=sensor id; value=temperature
+				self.tempReadingCallback(key, value)			
+			self.serialReadingCallback(self.ArdTemp.lastSerialReading)
+			
 			time.sleep(5)
 			
 	
